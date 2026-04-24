@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxeCart | Premium eCommerce</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Site Loader -->
+    <div id="siteLoader" class="site-loader">
+        <div class="spinner"></div>
+        <h2>LuxeCart</h2>
+    </div>
+
+    <!-- Back to top -->
+    <button id="backToTop"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Welcome Popup Ad -->
+    <div class="popup-overlay" id="welcomePopup">
+        <div class="popup-content glassmorphism">
+            <button class="close-popup" id="closePopup">&times;</button>
+            <div class="popup-body">
+                <h2>Welcome to LuxeCart!</h2>
+                <p>Get <strong>50% OFF</strong> on your first purchase today.</p>
+                <div class="coupon-box">
+                    <span id="popupCoupon">WELCOME50</span>
+                    <button id="copyCouponBtn">Copy</button>
+                </div>
+                <button class="btn-primary start-shopping w-100" id="startShoppingBtn">Start Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content glassmorphism">
+            <button class="close-modal" id="closeLoginModal">&times;</button>
+            <div class="modal-header">
+                <h2>Sign In</h2>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-primary w-100">Login</button>
+                <p class="modal-footer">Don't have an account? <a href="#">Register</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-content glassmorphism payment-content">
+            <button class="close-modal" id="closePaymentModal">&times;</button>
+            <div class="modal-header">
+                <h2>Secure Checkout</h2>
+            </div>
+            <div class="payment-body">
+                <div class="order-summary-box">
+                    <h3>Order Summary</h3>
+                    <div id="checkoutItemsContainer"></div>
+                    <div class="checkout-totals">
+                        <div class="summary-line"><span>Subtotal:</span> <span id="checkoutSubtotal">$0.00</span></div>
+                        <div class="summary-line discount-line"><span>Discount:</span> <span id="checkoutDiscount">-$0.00</span></div>
+                        <div class="summary-line"><span>Shipping Fee:</span> <span id="checkoutShipping">$0.00</span></div>
+                        <div class="summary-line total"><span>Total to Pay:</span> <span id="checkoutFinalTotal">$0.00</span></div>
+                    </div>
+                </div>
+                <form id="paymentForm">
+                    <div class="input-group">
+                        <i class="fas fa-credit-card"></i>
+                        <input type="text" placeholder="Card Number" required>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <i class="far fa-calendar-alt"></i>
+                            <input type="text" placeholder="MM/YY" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="text" placeholder="CVV" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary w-100">Pay Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content glassmorphism" style="text-align: center;">
+            <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success-color); margin-bottom: 20px;"></i>
+            <h2>Order Placed Successfully!</h2>
+            <p>Thank you for shopping with LuxeCart. Your order will be delivered soon.</p>
+            <button class="btn-primary w-100 mt-20" id="closeSuccessModal">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastContainer"></div>
+
+    <!-- Slide-in Cart -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <!-- Cart Items injected via JS -->
+            <div class="empty-cart" id="emptyCartView">
+                <i class="fas fa-shopping-basket"></i>
+                <p>Your cart is empty.</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="coupon-section">
+                <input type="text" id="couponInput" placeholder="Promo Code">
+                <button id="applyCouponBtn">Apply</button>
+            </div>
+            <div class="cart-summary">
+                <div class="summary-line"><span>Subtotal:</span> <span id="cartSubtotal">$0.00</span></div>
+                <div class="summary-line discount-line"><span>Discount:</span> <span id="cartDiscount">-$0.00</span></div>
+                <div class="summary-line total"><span>Total:</span> <span id="cartTotal">$0.00</span></div>
+            </div>
+            <button class="btn-primary w-100 checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="header glassmorphism-nav" id="header">
+        <div class="container nav-wrapper">
+            <div class="logo">
+                <a href="#">Luxe<span>Cart</span></a>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search products...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+
+            <nav class="nav-links">
+                <div class="nav-icons">
+                    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <div class="user-dropdown">
+                        <button id="loginBtn"><i class="fas fa-user"></i></button>
+                    </div>
+                    <button class="cart-toggle" id="cartToggleBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cartBadge">0</span>
+                    </button>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Top Ad Banner -->
+        <div class="ad-banner top-banner" id="topBanner">
+            <p>🔥 Flash Sale: Use code <strong>WELCOME50</strong> for 50% off select items! <span class="countdown" id="topCountdown">00:00:00</span></p>
+        </div>
+
+        <!-- Hero Carousel -->
+        <section class="hero-carousel">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide slide-1">
+                    <div class="slide-content">
+                        <h1>Summer Splash Sale</h1>
+                        <p>Up to 60% off on all summer essentials.</p>
+                        <a href="#featured" class="btn-primary">Shop Deals</a>
+                    </div>
+                </div>
+                <div class="carousel-slide slide-2">
+                    <div class="slide-content">
+                        <h1>New Arrivals: Tech</h1>
+                        <p>Experience the future with our newly launched gadgets.</p>
+                        <a href="#featured" class="btn-primary">Explore Tech</a>
+                    </div>
+                </div>
+                <div class="carousel-slide slide-3">
+                    <div class="slide-content">
+                        <h1>Exclusive Discounts</h1>
+                        <p>Premium fashion and accessories at unbeatable prices.</p>
+                        <a href="#featured" class="btn-primary">Discover More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-nav">
+                <button class="carousel-indicator active" data-index="0"></button>
+                <button class="carousel-indicator" data-index="1"></button>
+                <button class="carousel-indicator" data-index="2"></button>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories container scroll-animate">
+            <h2>Shop by Category</h2>
+            <div class="category-grid">
+                <button class="category-card active" data-category="all">
+                    <i class="fas fa-border-all"></i>
+                    <span>All</span>
+                </button>
+                <button class="category-card" data-category="electronics">
+                    <i class="fas fa-laptop"></i>
+                    <span>Electronics</span>
+                </button>
+                <button class="category-card" data-category="fashion">
+                    <i class="fas fa-tshirt"></i>
+                    <span>Fashion</span>
+                </button>
+                <button class="category-card" data-category="accessories">
+                    <i class="fas fa-headphones"></i>
+                    <span>Accessories</span>
+                </button>
+                <button class="category-card" data-category="home">
+                    <i class="fas fa-home"></i>
+                    <span>Home & Living</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section id="featured" class="featured-products container scroll-animate">
+            <div class="section-header">
+                <h2>Featured Products</h2>
+                <div class="filter-controls">
+                    <select id="priceFilter">
+                        <option value="default">Default</option>
+                        <option value="low">Price: Low to High</option>
+                        <option value="high">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+            <div class="product-grid" id="productGrid">
+                <!-- Skeletons will load first, then JS injects products -->
+            </div>
+        </section>
+
+        <!-- Mid-Page Ad Banner -->
+        <section class="mid-ad-banner container scroll-animate">
+            <div class="ad-content glassmorphism">
+                <h2>Premium Headphones Collection</h2>
+                <p>Experience crystal clear sound. Up to 40% Off!</p>
+                <button class="btn-primary" id="midAdBtn">Grab Deal</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo">Luxe<span>Cart</span></div>
+                <p style="margin-top: 15px; line-height: 1.6; color: var(--text-muted);">The ultimate premium shopping experience. Crafted with love and modern web technologies.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Service</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Shipping & Returns</a></li>
+                    <li><a href="#">Order Tracking</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <p style="margin-bottom: 10px; color: var(--text-muted);">Subscribe to get updates on new products and offers.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Your email">
+                    <button><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            <p>&copy; 2026 LuxeCart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
